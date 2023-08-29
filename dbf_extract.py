@@ -1,18 +1,17 @@
-# extract all BRAHMS tables to csv files
-
 from os import path, listdir, remove
 from dbfread import DBF
 import csv
 import re
 
+#first get the csv files from BRAHMS dbf files
 dbdir = r'E:\PRUBRAHMS7\PRU\DATABASE'
-outputdir = r'E:\PRUBRAHMS7\PRU\temp'
+outputdir = r'E:\PRUBRAHMS7\PRU\csv'
 
 dbfs = [f for f in listdir(dbdir) if path.isfile(path.join(dbdir, f)) and f.lower().endswith('dbf')]
 
 for dbf in dbfs:
   recordCount = 0
-  csvfile = re.sub('\.dbf$', '.csv', dbf, flags=re.I)
+  csvfile = re.sub('\.dbf$', '.csv', dbf, flags = re.I)
   with open(path.join(outputdir, csvfile), 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     fieldsadded = False
@@ -31,4 +30,4 @@ for dbf in dbfs:
   else:
     print(recordCount, 'records transfered from', csvfile)
 
-print('all done!')
+print('all done')
