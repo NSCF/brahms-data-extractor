@@ -12,7 +12,8 @@ def create_db(dbhost, dbuser, dbpwd, databasename, schemadir, schemafile):
     with connect(
       host = dbhost,
       user = dbuser,
-      password = dbpwd
+      password = dbpwd,
+      sql_mode ='TRADITIONAL'
     ) as connection:
       with connection.cursor() as cursor:
           
@@ -23,17 +24,20 @@ def create_db(dbhost, dbuser, dbpwd, databasename, schemadir, schemafile):
           print('creating database...')
           with open(path.join(schemadir, schemafile), 'r') as f:
             schemasql = f.read()
-            cursor.execute(schemasql) 
+            stmts = schemasql.split(';')
+            counter = 0
+            for stmt in stmts:
+              stmt = stmt.replace('\n', '')
+              if stmt != '':
+                cursor.execute(stmt) 
+                counter += 1
+
+            print(counter, 'sql statements executed')
 
   except Error as e:
     raise e
   
-  print('all done')
-  
-
-
-  
-
+  print('new database created')
 
 
 def make_row_data(csvRowDict, fields, types):

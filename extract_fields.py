@@ -1,5 +1,7 @@
+#extract the fields we want from the csv files so we can clean them in OpenRefine
+
 from mysql.connector import connect, Error
-from os import path, listdir
+from os import path, listdir, mkdir
 import csv
 import re
 from funcs import create_db, make_row_data
@@ -7,13 +9,16 @@ from funcs import create_db, make_row_data
 dbhost ='localhost'
 dbuser = 'root'
 dbpwd = 'root'
-dbname = 'pru'
-schemasqldir = r'E:\PRUBRAHMS7\PRU'
-schemasqlfile = r'pru brahms.sql'
+dbname = 'prum'
+schemasqldir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM'
+schemasqlfile = r'prum brahms.sql'
 
-#extract the fields we want from the csv files so we can clean them in OpenRefine
-csvdir = r'E:\PRUBRAHMS7\PRU\csv' #there must be nothing else in this directory
-outdir = r'E:\PRUBRAHMS7\PRU\trimmed_csvs'
+
+csvdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM\csv' #there must be nothing else in this directory
+outdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM\trimmed'
+
+if not path.isdir(outdir):
+  mkdir(outdir)
 
 try:
   create_db(dbhost, dbuser, dbpwd, dbname, schemasqldir, schemasqlfile)
@@ -28,7 +33,8 @@ try:
   with connect(
     host = dbhost,
     user = dbuser,
-    password = dbpwd
+    password = dbpwd,
+    sql_mode ='TRADITIONAL'
   ) as connection:
     with connection.cursor() as cursor:
       

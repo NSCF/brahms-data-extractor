@@ -4,8 +4,8 @@ import csv
 import re
 
 #first get the csv files from BRAHMS dbf files
-dbdir = r'E:\PRUBRAHMS7\PRU\DATABASE'
-outputdir = r'E:\PRUBRAHMS7\PRU\csv'
+dbdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM\DATABASE'
+outputdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM\csv'
 
 dbfs = [f for f in listdir(dbdir) if path.isfile(path.join(dbdir, f)) and f.lower().endswith('dbf')]
 
