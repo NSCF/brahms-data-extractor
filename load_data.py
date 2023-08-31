@@ -3,15 +3,16 @@ from os import path, listdir
 import csv
 import json
 import time
+import re
 from funcs import create_db, make_row_data
 
 dbhost ='localhost'
 dbuser = 'root'
 dbpwd = 'root'
-dbname = 'pru'
-schemasqldir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRU'
-schemasqlfile = r'pru brahms.sql'
-csvdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRU\openrefine csv' #there must be nothing else in this directory
+dbname = 'prum'
+schemasqldir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM'
+schemasqlfile = r'prum brahms.sql'
+csvdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM\OpenRefine' #there must be nothing else in this directory
 
 #the table order
 tableorder = [
@@ -59,12 +60,15 @@ try:
       csvs = listdir(csvdir) 
       for table in tableorder:
 
-        print('loading data for', table)
-
-        csvFiles = [csvFile for csvFile in csvs if csvFile.split('-')[0].lower() == table.lower()]
+        csvFiles = [csvFile for csvFile in csvs if re.sub('\.csv$', '', csvFile, flags = re.I).split('-')[0].lower() == table.lower()]
         if len(csvFiles) > 0:
           csvFile = csvFiles[0]
+        else:
+          print()
+          print('no csv file found for', table)
+          continue
         
+        #this should not be possible!
         if not path.isfile(path.join(csvdir, csvFile)):
           print('OOOPS!!!!', csvFile, 'does not exist!!!')
           exit()
@@ -78,9 +82,10 @@ try:
         with open(path.join(csvdir, csvFile), 'r', encoding='UTF8', errors='ignore') as f:
           reader = csv.DictReader(f)
           loadcount = 0
+          errcount = 0
+          print()
           for row in reader:
             data = make_row_data(row, fields, types)
-            
             ss = ", ".join(["%s"] * len(fields))
             insertsql = f'insert into {table} values ({ss})'
             try:
@@ -92,8 +97,11 @@ try:
                 errs[table].append(row)
               else:
                 errs[table] = [row]
+              errcount += 1
 
-            print(loadcount, 'records loaded')
+          print(loadcount, 'records loaded for', table)
+          if errcount:
+            print(errcount, 'errors for', table)
         
         connection.commit()
 
@@ -109,9 +117,11 @@ try:
 except Error as e:
   print(e)
 
+print()
 print('writing out error.json file')
 jsondata = json.dumps(errs, indent=2)
 with open('errors.json', 'w') as f:
   f.write(jsondata)
 
+print()
 print('all done')

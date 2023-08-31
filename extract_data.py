@@ -2,7 +2,7 @@
 # note this uses extract_data.sql, see that file to see what you'll get
 
 from mysql.connector import connect, Error
-from os import path, listdir
+from os import path
 import csv
 from progress.bar import Bar
 import time
@@ -10,8 +10,8 @@ import time
 dbhost ='localhost'
 dbuser = 'root'
 dbpwd = 'root'
-dbname = 'pru'
-csvDestDir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRU'
+dbname = 'prum'
+csvDestDir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM'
 
 #first get the sql
 #note it has no search params
