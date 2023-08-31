@@ -2,13 +2,13 @@
 -- note this includes only current IDs
 
 SELECT
-	s.barcode, s.accession, s.id as specid, cl.exherb, cl.exno, colls.namestring as collectors, c.prefix as prefix, c.number, tc.typecat, typesp.fullname as typeof, cl.faa,
+	s.barcode, s.accession, s.id as specid, cl.exherb, cl.exno, c.cultivated, c.cultnotes, colls.namestring as collectors, c.prefix as prefix, c.number, tc.typecat, typesp.fullname as typeof, cl.faa,
 	dh.curdet, dh.family, dh.genus, dh.herbcode, 
 	dh.sp1, dh.author1, dh.rank1, dh.sp2, dh.author2, dh.rank2, dh.sp3, dh.author3, dh.fullname, 
-    dh.detby, dh.detday, dh.detmonth, dh.detyear, dh.detstatus, 
+    dh.detby, dh.detday, dh.detmonth, dh.detyear, dh.detstatus, dh.detnotes,
     co.continent, co.region, co.coname as country, g.major, g.minor, g.locality as gazlocality, c.locnotes, g.lat as gazlat, g.ns as gazns, g.long as gazlong, g.ew as gazew, g.alt1 as gazalt1, g.alt2 as gazalt2,
-    g.llres as gazllres, g.llunit as gazllunit, g.qds as gazqds, g.gaznotes, 
-    c.lat as speclat, c.ns as specns, c.long as speclong, c.ew as specew, c.llres as specllres, c.qds as specqds, c.alt1 as specalt, c.habitattxt, 
+    g.llres as gazllres, g.llunit as gazllunit, g.llorig as gazllorig, g.qds as gazqds, g.gaznotes, 
+    c.lat as speclat, c.ns as specns, c.long as speclong, c.ew as specew, c.llres as specllres, c.llunit as specllunit, c.qds as specqds, c.alt1 as specalt, c.altunit as specaltunit, c.altres as specaltres, c.alttext as specalttext, c.habitattxt, 
     cl.locvegtype as vegtype, cl.lochabitat as habitat, cl.locsubstra as substrate, cl.locmoistur as moisture, cl.locsoil as soil, cl.loclitholo as lithology, cl.locexposur as exposure, cl.locaspect as aspect, cl.bioticeffe as bioticeffect, 
     c.day as collday, c.month as collmonth, c.year as collyear, c.datetext as datetext,
     cl.flcode, cl.frcode, c.plantdesc, c.notes, c.initial, c.available
@@ -26,7 +26,7 @@ left outer join (
 	select
 		dh.specid, dh.curdet, f.faname as family, ge.gename as genus, ge.herbcode, 
 		sp.sp1, au1.namestring as author1, sp.rank1, sp.sp2, au2.namestring as author2, sp.rank2, sp.sp3, au3.namestring as author3, sp.fullname as fullname,
-		detby.namestring as detby, dh.detday, dh.detmonth, dh.detyear, dh.detstatus
+		detby.namestring as detby, dh.detday, dh.detmonth, dh.detyear, dh.detstatus, dh.detnotes
 	from dethistory dh -- on s.id = dh.specid
 	left outer join peopleview detby on dh.detbyid = detby.id
 	left outer join species sp on dh.spnumber = sp.spnumber
