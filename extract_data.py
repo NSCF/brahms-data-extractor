@@ -10,11 +10,20 @@ import time
 dbhost ='localhost'
 dbuser = 'root'
 dbpwd = 'root'
+
 dbname = 'prum'
 csvDestDir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM'
+outputFileName = 'prumAdditionalDets.csv'  # or allDataExtracted.csv or prumAdditionalDets.csv
 
+extype = 'dets' #data or dets
+
+
+#SCRIPT
 #first get the sql
 #note it has no search params
+sqlfile = 'extract_data.sql'
+if extype == 'dets':
+  sqlfile = 'extract_dets.sql'
 with open('extract_data.sql', 'r') as sqlfile:
   sql = sqlfile.read()
 
@@ -44,7 +53,7 @@ try:
       start = time.time()
       bar.next()
       
-      with open(path.join(csvDestDir, 'allDataExtracted.csv'), 'w', encoding='UTF8', newline='') as csvfile:
+      with open(path.join(csvDestDir, outputFileName), 'w', encoding='UTF8', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fields)
         writer.writeheader()
         writer.writerow(firstrecord)
