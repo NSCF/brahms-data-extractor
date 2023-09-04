@@ -11,12 +11,11 @@ dbhost ='localhost'
 dbuser = 'root'
 dbpwd = 'root'
 
-dbname = 'prum'
-csvDestDir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM'
+dbname = 'pru'
+csvDestDir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRU'
 outputFileName = 'prumAdditionalDets.csv'  # or allDataExtracted.csv or prumAdditionalDets.csv
 
 extype = 'dets' #data or dets
-
 
 #SCRIPT
 #first get the sql
@@ -24,7 +23,7 @@ extype = 'dets' #data or dets
 sqlfile = 'extract_data.sql'
 if extype == 'dets':
   sqlfile = 'extract_dets.sql'
-with open('extract_data.sql', 'r') as sqlfile:
+with open(sqlfile, 'r') as sqlfile:
   sql = sqlfile.read()
 
 try:
@@ -40,18 +39,21 @@ try:
       cursor.execute(f'use {dbname}')
 
       #get a count so we can show progress
-      cursor.execute('select count(*) as cnt from specimens')
-      result = cursor.fetchall()
-      for row in result:
-        count = row['cnt']
+      if extype != 'det':
+        cursor.execute('select count(*) as cnt from specimens')
+        result = cursor.fetchall()
+        for row in result:
+          count = row['cnt']
 
       #read the db
-      bar = Bar('Extracting', max=count)
+      if extype != 'det':
+        bar = Bar('Extracting', max=count)
       cursor.execute(sql)
       firstrecord = cursor.fetchone()
       fields = firstrecord.keys()
       start = time.time()
-      bar.next()
+      if extype != 'det':
+        bar.next()
       
       with open(path.join(csvDestDir, outputFileName), 'w', encoding='UTF8', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fields)
@@ -60,9 +62,12 @@ try:
 
         for row in cursor:
           writer.writerow(row)
-          bar.next()
+          if extype != 'det':
+            bar.next()
 
-      bar.finish()
+      if extype != 'det':
+        bar.finish()
+
       end = time.time()
       millis = end * 1000 - start * 1000
 

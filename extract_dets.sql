@@ -11,4 +11,4 @@ select
 	left outer join genus ge on sp.gecode = ge.gecode
 	left outer join peopleview gau on ge.aucode = gau.id
 	left outer join family f on ge.facode = f.facode
-	where dh.curdet is null or trim(dh.curdet) == ''
+	where dh.curdet is null or trim(dh.curdet) = ''
