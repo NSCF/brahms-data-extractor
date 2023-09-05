@@ -1,11 +1,17 @@
-from os import path, listdir, remove
-from dbfread import DBF
+from os import path, listdir, remove, mkdir
+from dbfread import DBF, FieldParser
 import csv
 import re
 
+#For Skukuza we need a custom par
+from customParsers import stringdates
+
 #first get the csv files from BRAHMS dbf files
-dbdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM\DATABASE'
-outputdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM\csv'
+dbdir = r'D:\BACKUP BRAHMS_31 08 2021\BRAHMS_KNP_DATA\myrdefiles' #The BRAHMS database folder
+outputdir = r'C:\temp\SkukuzaBRAHMS/rde'
+
+if not path.isdir(outputdir):
+  mkdir(outputdir)
 
 dbfs = [f for f in listdir(dbdir) if path.isfile(path.join(dbdir, f)) and f.lower().endswith('dbf')]
 
@@ -15,7 +21,7 @@ for dbf in dbfs:
   with open(path.join(outputdir, csvfile), 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     fieldsadded = False
-    for record in DBF(path.join(dbdir, dbf), char_decode_errors='ignore'):
+    for record in DBF(path.join(dbdir, dbf), char_decode_errors='ignore', parserclass=stringdates):
       if not fieldsadded:
         fields = record.keys()
         writer.writerow(fields)
