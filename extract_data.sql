@@ -2,7 +2,7 @@
 -- note this includes only current IDs
 
 SELECT
-	s.barcode, s.accession, s.id as specid, cl.exherb, cl.exno, c.cultivated, c.cultnotes, colls.namestring as collectors, c.prefix as prefix, c.number, tc.typecat, typesp.fullname as typeof, cl.faa,
+	s.barcode, s.accession, ih.ihcode, s.id as specid, cl.exherb, cl.exno, c.cultivated, c.cultnotes, colls.namestring as collectors, c.prefix as prefix, c.number, tc.typecat, typesp.fullname as typeof, cl.faa,
 	dh.curdet, dh.family, dh.genus, dh.herbcode, 
 	dh.sp1, dh.author1, dh.rank1, dh.sp2, dh.author2, dh.rank2, dh.sp3, dh.author3, dh.fullname, 
     dh.detby, dh.detday, dh.detmonth, dh.detyear, dh.detstatus, dh.detnotes,
