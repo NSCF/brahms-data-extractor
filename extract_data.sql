@@ -2,7 +2,7 @@
 -- note this includes only current IDs
 
 SELECT
-	s.barcode, s.accession, ih.ihcode, s.id as specid, cl.exherb, cl.exno, c.cultivated, c.cultnotes, colls.namestring as collectors, c.prefix as prefix, c.number, tc.typecat, typesp.fullname as typeof, cl.faa,
+	s.barcode, s.accession, ihdups.dups, s.id as specid, cl.exherb, cl.exno, c.cultivated, c.cultnotes, colls.namestring as collectors, c.prefix as prefix, c.number, tc.typecat, typesp.fullname as typeof, cl.faa,
 	dh.curdet, dh.family, dh.genus, dh.herbcode, 
 	dh.sp1, dh.author1, dh.rank1, dh.sp2, dh.author2, dh.rank2, dh.sp3, dh.author3, dh.fullname, 
     dh.detby, dh.detday, dh.detmonth, dh.detyear, dh.detstatus, dh.detnotes,
@@ -15,12 +15,18 @@ SELECT
 from specimens s
 left outer join species as typesp on s.sptype = typesp.spnumber -- not every specimen has a typesp record, only some of the types
 left outer join collections c on s.brahms = c.brahms -- every specimen has a collection record
+left outer join (
+	SELECT c.brahms, group_concat(ih.ihcode) as dups from collections c
+    left outer join specimens s on s.brahms = c.brahms
+    left outer join ih on s.hbcode = ih.id
+    group by c.brahms
+) as ihdups on c.brahms = ihdups.brahms
 left outer join peopleview colls on c.pview = colls.id
 left outer join botrecordcats brc on c.category = brc.abbreviate
 left outer join colllink cl on cl.brahms = c.brahms
 left outer join gaz g on c.gazcode = g.gazcode
 left outer join country co on g.conumber = co.conumber
-left outer join ih on s.hbcode = ih.id
+
 left outer join typecategories tc on s.hstype = tc.id
 left outer join (
 	select
