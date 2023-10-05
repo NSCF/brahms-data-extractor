@@ -4,9 +4,9 @@ import csv
 from os import path
 
 csvDir = r'C:\Users\Ian Engelbrecht\Downloads'
-csvFile = 'Skukuza-BRAHMS-specimens-OpenRefine_NoNameMatch.csv'
-csvFieldName = 'FullName'
-outputCSVFile = 'uniqueVals.csv'
+csvFile = 'uniqueNames.csv'
+csvFieldName = 'uniques'
+outputCSVFile = 'uniqueNames2.csv'
 
 print('getting unique vals from', csvFieldName)
 vals = set()
