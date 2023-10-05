@@ -1,7 +1,13 @@
-from dbfread import FieldParser
+from dbfread import FieldParser, InvalidValue
 
-#sometimes are errors in date fields, so return the raw value
+#sometimes there are errors in date fields, so return the raw value
 class stringdates(FieldParser):
   def parseD(self, field, data):
-    # Return strings reversed.
     return str(data.rstrip(b' 0').decode())
+  
+class genericParser(FieldParser):
+  def parse(self, field, data):
+    try:
+      return FieldParser.parse(self, field, data)
+    except ValueError:
+      return str(data.decode())

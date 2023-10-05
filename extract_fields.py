@@ -9,13 +9,13 @@ from funcs import create_db, make_row_data
 dbhost ='localhost'
 dbuser = 'root'
 dbpwd = 'root'
-dbname = 'prum'
-schemasqldir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM'
-schemasqlfile = r'prum brahms.sql'
+dbname = 'bnrh_taxonomy'
+schemasqldir = r'D:\NSCF Data WG\Data\BNRH'
+schemasqlfile = r'BRAHMS taxonomy.sql'
 
 
-csvdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM\csv' #there must be nothing else in this directory
-outdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM\trimmed'
+csvdir = r'D:\NSCF Data WG\Data\BNRH\csv' #there must be nothing else in this directory
+outdir = r'D:\NSCF Data WG\Data\BNRH\csv_taxonomy_trimmed'
 
 if not path.isdir(outdir):
   mkdir(outdir)
@@ -65,7 +65,13 @@ try:
             with open(path.join(csvdir, csvFile), 'r', encoding='UTF8', errors='ignore') as f:
               reader = csv.DictReader(f)
               for row in reader:
-                data = make_row_data(row, fields, types)
+                try:
+                  data = make_row_data(row, fields, types)
+                except Exception as ex:
+                  print("Error extracting data:", str(ex))
+                  print('Correct this error and try again...')
+                  print(row)
+                  exit()
                 writer.writerow(data)
 
 except Error as e:

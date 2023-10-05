@@ -9,10 +9,10 @@ from funcs import create_db, make_row_data
 dbhost ='localhost'
 dbuser = 'root'
 dbpwd = 'root'
-dbname = 'prum'
-schemasqldir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM'
-schemasqlfile = r'prum brahms.sql'
-csvdir = r'D:\NSCF Data WG\Specify migration\PRU\PRUBRAHMS7\PRUM\OpenRefine' #there must be nothing else in this directory
+dbname = 'bnrh_taxonomy'
+schemasqldir = r'D:\NSCF Data WG\Data\BNRH'
+schemasqlfile = r'BRAHMS taxonomy.sql'
+csvdir = r'D:\NSCF Data WG\Data\BNRH\csv_taxonomy_openrefine' #there must be nothing else in this directory
 
 #the table order
 tableorder = [
