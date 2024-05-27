@@ -1,4 +1,4 @@
-#get a list of unique values in a column from a csv file
+# get a list of unique values in a column from a csv file
 
 import csv
 from os import path

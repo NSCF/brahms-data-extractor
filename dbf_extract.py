@@ -7,8 +7,8 @@ import re
 from customParsers import genericParser
 
 #first get the csv files from BRAHMS dbf files
-dbdir = r'D:\NSCF Data WG\Data\BNRH\Database' #The BRAHMS database folder
-outputdir = r'D:\NSCF Data WG\Data\BNRH\csv'
+dbdir = r'E:\Herbarium imaging\NU\CPF_RDE' #The BRAHMS database folder
+outputdir = r'E:\Herbarium imaging\NU\CPF_RDE\csv'
 
 if not path.isdir(outputdir):
   mkdir(outputdir)
