@@ -1,13 +1,13 @@
 # joins a set of csvs in a directory into one file
 # expects one file to have all the headers found in the other csvs. 
 # see compare_csv_headers.py
-# note that this scripts outputs all results to file called all.csv, so if that already exists it will be overwritten
 
 import os, csv
 
 csv_dir = r"E:\Herbarium imaging\NU\CPF_RDE\csv"
-csv_with_all_headers = r"dicots10.csv"
+csv_with_all_headers = r"cpf_all.csv"
 source_field = "SOURCE" # the name of the field to add for the source file
+out_file = "cpf_all_merged.csv" # the name of the output file
 
 all_records = []
 all_fields = []
@@ -39,11 +39,11 @@ for csv_file in csvs:
           mapped[field] = record[field]
         else:
           mapped[field] = None
-      mapped[source_field]
+      mapped[source_field] = csv_file
       all_records.append(mapped)
 
 print('writing out results')
-with open(os.path.join(csv_dir, 'all.csv'), 'w', encoding='UTF8', newline='') as csvfile:
+with open(os.path.join(csv_dir, out_file), 'w', encoding='UTF8', newline='') as csvfile:
     writer = csv.DictWriter(csvfile, all_fields)
     writer.writeheader()
     writer.writerows(all_records)

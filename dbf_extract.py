@@ -18,7 +18,7 @@ for root, dir_names, file_names in walk(dbdir):
     if f.lower().endswith('.dbf'):
       dbf = path.join(root, f)
       recordCount = 0
-      csvfile = re.sub('\.dbf$', '.csv', f, flags = re.I)
+      csvfile = re.sub(r'\.dbf$', '.csv', f, flags = re.I)
       with open(path.join(outputdir, csvfile), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         fieldsadded = False
